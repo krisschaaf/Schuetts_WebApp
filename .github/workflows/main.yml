@@ -29,9 +29,9 @@ jobs:
       - name: Test
         run: go test -v ./...
         
-      # - name: Build and publish Docker image
-      #   uses: VaultVulp/gp-docker-action@1.5.0
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }} 
-      #     image-name: schuett-webapp-api
-      #     additional-image-tags: ${{ github.run_id }}
+      - name: Build and publish Docker image
+        uses: VaultVulp/gp-docker-action@1.5.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }} 
+          image-name: schuett-webapp-api
+          additional-image-tags: ${{ github.run_id }}
