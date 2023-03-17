@@ -18,9 +18,13 @@ jobs:
         uses: actions/setup-go@v3
         with:
           go-version: 1.20.2
+          cache: true
+
+      - name: Install dependencies
+        run: go get .
 
       - name: Build
-        run: go build -v ./...
+        run: go build -v ./... -o schuett-webapp-api
 
       - name: Test
         run: go test -v ./...
@@ -29,5 +33,5 @@ jobs:
         uses: VaultVulp/gp-docker-action@1.5.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }} 
-          image-name: schuett-webapp-backend
+          image-name: schuett-webapp-api
           additional-image-tags: ${{ github.run_id }}
