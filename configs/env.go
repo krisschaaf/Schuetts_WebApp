@@ -8,9 +8,16 @@ import (
 	"github.com/joho/godotenv"
 )
 
-type Config struct {
+type MongoConfig struct {
 	MongoURIBeg string `env:"MONGOURI_BEG,required"`
 	MongoURIEnd string `env:"MONGOURI_END,required"`
+}
+
+type AuthConfig struct {
+	Auth0Domain       string `env:"AUTH0_DOMAIN,required"`
+	Auth0ClientId     string `env:"AUTH0_CLIENT_ID,required"`
+	Auth0CallbackUrl  string `env:"AUTH0_CALLBACK_URL,required"`
+	Auth0ClientSecret string
 }
 
 func EnvMongoURI() string {
@@ -19,7 +26,7 @@ func EnvMongoURI() string {
 		log.Fatalf("unable to load .env file: %e", err)
 	}
 
-	cfg := Config{}
+	cfg := MongoConfig{}
 
 	err = env.Parse(&cfg)
 	if err != nil {
@@ -30,4 +37,22 @@ func EnvMongoURI() string {
 	mongoURI := os.ExpandEnv(cfg.MongoURIBeg + mongoDBPassword + cfg.MongoURIEnd)
 
 	return mongoURI
+}
+
+func EnvAuthObj() AuthConfig {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("unable to load .env file: %e", err)
+	}
+
+	cfg := AuthConfig{}
+
+	err = env.Parse(&cfg)
+	if err != nil {
+		log.Fatalf("unable to parse ennvironment variables: %e", err)
+	}
+
+	cfg.Auth0ClientSecret = os.Getenv("AUTH0_CLIENT_SECRET")
+
+	return cfg
 }
