@@ -158,7 +158,6 @@ func DeleteAllCustomers(c *fiber.Ctx) error {
 		return c.Status(http.StatusInternalServerError).JSON(responses.CustomerResponse{Status: http.StatusInternalServerError, Message: "error", Data: &fiber.Map{"data": err.Error()}})
 	}
 
-	//reading from the db in an optimal way
 	defer results.Close(ctx)
 	for results.Next(ctx) {
 		var singleCustomer models.Customer
